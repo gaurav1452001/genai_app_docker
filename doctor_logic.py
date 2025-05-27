@@ -6,5 +6,32 @@ GROQ_KEY= os.getenv("GROQ_API_KEY")
 import base64
 image_path="acne.jpg"
 image_file=open(image_path,"rb")
-encode_image=base64.b64encode(image_file.read()).decode("utf-8")
+encoded_image=base64.b64encode(image_file.read()).decode("utf-8")
 #3. setup multimodal llm
+
+from groq import Groq
+client=Groq()
+query="placeholder query"
+model="meta-llama/llama-4-scout-17b-16e-instruct"
+messages=[
+    {
+        "role":"user",
+        "content": [
+            #image model has two queries, one text and one image
+            {
+                #text query
+                
+                "type": "text",
+                "text": query
+            },
+            {
+                #image query
+
+                "type": "image_url",
+                "image_url": {
+                    "url": f"data:image/jpeg;base64,{encoded_image}"
+                }
+            }
+        ]
+    }
+]
