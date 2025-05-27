@@ -10,7 +10,6 @@ encoded_image=base64.b64encode(image_file.read()).decode("utf-8")
 #3. setup multimodal llm
 
 from groq import Groq
-client=Groq()
 query="placeholder query"
 model="meta-llama/llama-4-scout-17b-16e-instruct"
 messages=[
@@ -35,3 +34,9 @@ messages=[
         ]
     }
 ]
+client=Groq()
+chat_response=client.chat.completions.create(
+    messages=messages,
+    model=model,
+)
+print(chat_response.choices[0].message.content)
