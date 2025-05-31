@@ -10,7 +10,7 @@ encoded_image=base64.b64encode(image_file.read()).decode("utf-8")
 #3. setup multimodal llm
 
 from groq import Groq
-query="placeholder query"
+query="You are a doctor. Please analyze the image and provide a diagnosis based on the symptoms shown in the image. Please provide a detailed explanation of the condition and any recommended treatments."
 model="meta-llama/llama-4-scout-17b-16e-instruct"
 messages=[
     {
