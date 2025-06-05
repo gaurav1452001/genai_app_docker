@@ -1,6 +1,9 @@
 #setup1.a text to speech tts-model for response gTTS
 import os
 from gtts import gTTS
+from pydub import AudioSegment
+import subprocess
+import platform
 
 def text_to_speech_gtts(input_text, output_path):
     language = 'en'
@@ -11,8 +14,25 @@ def text_to_speech_gtts(input_text, output_path):
         slow=False
     )
     audioobj.save(output_path)
-input_text = "Hello, my name is Sarah and i am an awesome girl!"
-text_to_speech_gtts(input_text, "response.mp3")
+    sound = AudioSegment.from_mp3("response.mp3")
+    sound.export("response.wav", format="wav")
+    os_name = platform.system()
+    try:
+        if os_name == "Darwin":
+            subprocess.run(["afplay", output_path])
+        elif os_name == "Windows":  # macOS
+            subprocess.run(['powershell', '-c', f'(New-Object Media.SoundPlayer "response.wav").PlaySync();'])
+            # subprocess.run(['start', 'response.mp3'], shell=True)
+
+        elif os_name == "Linux":  # Linux and other OS
+            subprocess.run(["aplay", output_path])
+        else:
+            raise OSError("Unsupported OS")
+    except Exception as e:
+        print(f"Error opening audio file: {e}")
+
+input_text = "This is another test case for the text to speech conversion using gTTS."
+text_to_speech_gtts(input_text=input_text, output_path="response.mp3")
 
 
 #setup1.b text to speech tts-model for response elevenlabs
@@ -30,9 +50,26 @@ def text_to_speech_elevenlabs(input_text, output_path):
         output_format="mp3_44100_128",
     )
     save(audio, output_path)
+    sound = AudioSegment.from_mp3("response_elevenlabs.mp3")
+    sound.export("response_elevenlabs.wav", format="wav")
+    os_name = platform.system()
+    try:
+        if os_name == "Darwin":
+            subprocess.run(["afplay", output_path])
+        elif os_name == "Windows":  # macOS
+            subprocess.run(['powershell', '-c', f'(New-Object Media.SoundPlayer "response_elevenlabs.wav").PlaySync();'])
+        elif os_name == "Linux":  # Linux and other OS
+            subprocess.run(["aplay", output_path])
+        else:
+            raise OSError("Unsupported OS")
+    except Exception as e:
+        print(f"Error opening audio file: {e}")
 
 # Example usage
-input_text = "Hello! I am a follower of Gaurav Kumar."
-text_to_speech_elevenlabs(input_text, "response_elevenlabs2.mp3")
+# input_text = "This is a test case and is only for testing purposes."
+# text_to_speech_elevenlabs(input_text, output_path="response_elevenlabs.mp3")
 
-#use model for text output to voice
+
+
+
+
