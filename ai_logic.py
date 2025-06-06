@@ -5,11 +5,9 @@ from groq import Groq
 GROQ_KEY= os.getenv("GROQ_API_KEY")
 
 def encode_image(image_path):
-    image_file=open(image_path,"rb")
-    return base64.b64encode(image_file.read()).decode("utf-8")
+    with open(image_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode("utf-8")
 
-query="You are a doctor. Please analyze the image and provide a diagnosis based on the symptoms shown in the image. Please provide a detailed explanation of the condition and any recommended treatments."
-model="meta-llama/llama-4-scout-17b-16e-instruct"
 def image_to_text(query,model,encoded_image):
     messages=[
         {
@@ -32,9 +30,9 @@ def image_to_text(query,model,encoded_image):
                 }
             ]
         }
-    ]
-    client=Groq()
-    chat_response=client.chat.completions.create(
+    ]    
+    client = Groq(api_key=GROQ_KEY)
+    chat_response = client.chat.completions.create(
         messages=messages,
         model=model,
     )
