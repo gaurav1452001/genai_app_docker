@@ -15,7 +15,6 @@ def record_audio(file_path, timeout=10, phrase_time_limit=None):
             logging.info("Adjusting for ambient noise...")
             recognizer.adjust_for_ambient_noise(source,duration=1)
             logging.info("You can start speaking...")
-
             audio_data = recognizer.listen(source, timeout=timeout, phrase_time_limit=phrase_time_limit)
             logging.info("Recording is complete")
 
