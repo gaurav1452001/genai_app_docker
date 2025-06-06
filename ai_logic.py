@@ -1,13 +1,12 @@
 #doctor_logic.py, encode_image, image_to_text
 import os
 import base64
+from groq import Groq
 GROQ_KEY= os.getenv("GROQ_API_KEY")
 
 def encode_image(image_path):
     image_file=open(image_path,"rb")
     return base64.b64encode(image_file.read()).decode("utf-8")
-
-from groq import Groq
 
 query="You are a doctor. Please analyze the image and provide a diagnosis based on the symptoms shown in the image. Please provide a detailed explanation of the condition and any recommended treatments."
 model="meta-llama/llama-4-scout-17b-16e-instruct"
@@ -41,15 +40,7 @@ def image_to_text(query,model,encoded_image):
     )
     return chat_response.choices[0].message.content
 
-
-
-
-
-
-
-
-
-#doctor_voice.py
+#doctor_voice.py text_to_speech_gtts
 import os
 from gtts import gTTS
 from pydub import AudioSegment
@@ -77,15 +68,9 @@ def text_to_speech_gtts(input_text, output_path):
 
         elif os_name == "Linux":  # Linux and other OS
             subprocess.run(["aplay", output_path])
-        else:
-            raise OSError("Unsupported OS")
+        else:        raise OSError("Unsupported OS")
     except Exception as e:
         print(f"Error opening audio file: {e}")
-
-input_text = "This is another test case for the text to speech conversion using gTTS."
-text_to_speech_gtts(input_text=input_text, output_path="response.mp3")
-
-
 
 
 #patient_logic.py record_audio,transcribe_audio
@@ -111,15 +96,11 @@ def record_audio(file_path, timeout=10, phrase_time_limit=None):
             wav_data= audio_data.get_wav_data()
             mp3_audio = AudioSegment.from_wav(BytesIO(wav_data))
             mp3_audio.export(file_path, format="mp3", bitrate="128k")
-
             logging.info(f"Audio saved to {file_path}")
-
     except Exception as e:
         logging.error(f"An error occurred while recording audio: {e}")
 
-audio_path="patient_audio.mp3"
-record_audio(file_path=audio_path)
-
+# Transcription function
 import os
 from groq import Groq
 

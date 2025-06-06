@@ -8,10 +8,21 @@
                     <h5 class="card-title">Voice Input</h5>
                     <p class="card-text">Click the microphone to start speaking</p>
                     <div class="text-center">
-                        <button id="micButton" class="btn btn-primary btn-lg rounded-circle">
-                            <i class="fas fa-microphone"></i>
-                        </button>
-                        <p id="recordingStatus" class="mt-2">Not recording</p>
+                        <form action="/find_answer" method="get">
+                            <button id="recordBtn" type="submit" class="btn btn-danger"
+                                style="border-radius: 50%; width: 70px; height: 70px; font-size: 24px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); transition: all 0.3s ease;">
+                                🎤
+                            </button>
+                        </form>
+                        <p id="recordingStatus" class="mt-3" style="font-weight: 600; color: #666; font-size: 14px;">Not
+                            recording
+                        </p>
+                        <div id="transcribedText" class="mt-2"
+                            style="font-size: 12px; color: #333; background: #f8f9fa; padding: 8px; border-radius: 5px;"
+                            {% if not transcribed_text %}hidden{% endif %}>
+                            {% if transcribed_text %}{{ transcribed_text }}{% else
+                            %}<!-- Transcribed text will appear here -->{% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -24,7 +35,8 @@
                     <h5 class="card-title">Image Input</h5>
                     <p class="card-text">Upload an image for analysis</p>
                     <div class="text-center">
-                        <input type="file" class="form-control" id="imageUpload" accept="image/*" style="display: none;">
+                        <input type="file" class="form-control" id="imageUpload" accept="image/*"
+                            style="display: none;">
                         <label for="imageUpload" class="btn btn-primary">
                             <i class="fas fa-upload"></i> Choose Image
                         </label>
